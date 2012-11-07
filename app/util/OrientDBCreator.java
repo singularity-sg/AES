@@ -1,18 +1,19 @@
 package util;
 
-import java.io.File;
-
-import org.apache.log4j.Logger;
-
 import com.orientechnologies.orient.core.db.object.ODatabaseObjectPool;
 import com.orientechnologies.orient.core.db.object.ODatabaseObjectTx;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+import play.Play;
+
+import java.io.File;
 
 public class OrientDBCreator {
 	
 	private static Logger logger = Logger.getLogger(OrientDBCreator.class);
 	
-	public static void main(String[] args) {
-		new OrientDBCreator().createDB("local:D://sandbox/lab/AES/db","admin","admin");
+	public static void main(String[] args) throws Exception {
+		new OrientDBCreator().createDB("local:/media/sda3//Development/workspace/AES/db", "admin", "admin");
 	}
 	
 	public void createDB(String url, String user, String password) {
@@ -24,7 +25,7 @@ public class OrientDBCreator {
 		if(url != null && !"".equals(url) && url.indexOf(":") >= 0) {
 			path = url.substring(url.indexOf(":") + 1);
 		}
-		
+
 		File folder = new File(path);
 		if(folder.exists()) {
 			try {
@@ -36,9 +37,12 @@ public class OrientDBCreator {
 				db = new ODatabaseObjectTx(url).create();
 				logger.info("Creating new database...");
 			} finally {
+                logger.info("Closing DB");
 				db.close();
 			}
-		}
+		}else {
+            logger.error("Unable to find specified path");
+        }
 	}
 
 }
