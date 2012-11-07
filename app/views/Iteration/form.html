@@ -1,0 +1,12 @@
+<div id="iteration_form_container">
+	#{if (mode.equals("add"))}
+		#{form action: @Iteration.create(), enctype:'multipart/form-data'}
+	    	#{iteration_form_contents /}
+		#{/form}
+	#{/if}
+	#{else}
+		#{form action: @Iteration.save(), enctype:'multipart/form-data'}
+	    	#{iteration_form_contents /}
+		#{/form}	
+	#{/else}
+</div>

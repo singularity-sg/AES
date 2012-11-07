@@ -1,16 +1,15 @@
 package controllers;
 
-import play.*;
-import play.mvc.*;
+import java.util.List;
 
-import java.util.*;
-
-import models.*;
+import models.Iteration;
+import play.mvc.Controller;
 
 public class Application extends Controller {
 
     public static void index() {
-        render();
+    	List<Iteration> iterations = Iteration.find("select * from Iteration");
+        render(iterations);
     }
 
 }

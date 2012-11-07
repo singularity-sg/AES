@@ -1,0 +1,19 @@
+<div id="iteration_container">
+	<div id="table_decorator"><a class="button" id="add_button" href="@{Iteration.add()}">Add</a></div>
+	<table id="iteration_table">
+		<thead>
+			<tr>
+				<th>Iteration</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+		#{list items: _iterations, as:'iteration'}
+			<tr>
+				<td>${iteration.name}</td>
+				<td><a id="edit_button" class="button" href="@{Iteration.edit(iteration.id)}">Edit</a><a class="button" id="delete_button" href="@{Iteration.delete(iteration.id)}">Delete</a></td>
+			</tr>
+		#{/list}
+		</tbody>
+	</table>
+</div>
