@@ -1,26 +1,24 @@
 package controllers;
 
-import com.orientechnologies.orient.core.id.ORecordId;
+import java.util.ArrayList;
+
 import models.Fibonacci;
 import models.Story;
 import play.mvc.Controller;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.orientechnologies.orient.core.id.ORecordId;
 
 public class Iteration extends Controller {
 
-    public enum MODE {CREATE,UPDATE,DELETE};
-
 	public static void add() {
-        MODE mode = MODE.CREATE;
-		renderTemplate("Iteration/form.html", mode);
+        CRUD mode = CRUD.CREATE;
+		renderTemplate("Iteration/iteration.html", mode);
 	}
 	
 	public static void edit(ORecordId id) {
 		models.Iteration iteration = models.Iteration.findById(id);
-        MODE mode = MODE.UPDATE;
-        renderTemplate("Iteration/form.html", mode, iteration);
+        CRUD mode = CRUD.UPDATE;
+        renderTemplate("Iteration/iteration.html", mode, iteration);
 	}
 	
 	public static void delete(ORecordId id) {

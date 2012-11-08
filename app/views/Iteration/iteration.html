@@ -1,12 +1,14 @@
 <div id="iteration_form_container">
-	#{if (controllers.Iteration.MODE.CREATE.equals(mode))}
+	#{if (controllers.CRUD.CREATE.equals(mode))}
 		#{form action: @Iteration.create(), enctype:'multipart/form-data'}
 	    	#{iteration_form_contents /}
 		#{/form}
 	#{/if}
-	#{elseif (controllers.Iteration.MODE.UPDATE.equals(mode))}
+	#{elseif (controllers.CRUD.UPDATE.equals(mode))}
 		#{form action: @Iteration.save(iteration.getIdentity()), enctype:'multipart/form-data'}
 	    	#{iteration_form_contents iteration:iteration /}
 		#{/form}	
 	#{/elseif}
 </div>
+
+#{stories iteration:iteration /}

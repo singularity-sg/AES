@@ -1,0 +1,12 @@
+<div id="story_form_container">
+	#{if (controllers.CRUD.CREATE.equals(mode))}
+		#{form action: @Story.create(), enctype:'multipart/form-data'}
+	    	#{story_form_contents /}
+		#{/form}
+	#{/if}
+	#{elseif (controllers.CRUD.UPDATE.equals(mode))}
+		#{form action: @Story.save(story.getIdentity()), enctype:'multipart/form-data'}
+	    	#{story_form_contents story:story /}
+		#{/form}	
+	#{/elseif}
+</div>
