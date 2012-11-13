@@ -1,3 +1,5 @@
+#{stories iteration:iteration /}
+
 <div id="iteration_form_container">
 	#{if (controllers.CRUD.CREATE.equals(mode))}
 		#{form action: @Iteration.create(), enctype:'multipart/form-data'}
@@ -10,5 +12,3 @@
 		#{/form}	
 	#{/elseif}
 </div>
-
-#{stories iteration:iteration /}

@@ -12,12 +12,14 @@ public class Iteration extends Controller {
 
 	public static void add() {
         CRUD mode = CRUD.CREATE;
-		renderTemplate("Iteration/iteration.html", mode);
+        models.Iteration iteration = new models.Iteration();
+		renderTemplate("Iteration/iteration.html", mode, iteration);
 	}
 	
 	public static void edit(ORecordId id) {
 		models.Iteration iteration = models.Iteration.findById(id);
         CRUD mode = CRUD.UPDATE;
+
         renderTemplate("Iteration/iteration.html", mode, iteration);
 	}
 	
@@ -44,14 +46,6 @@ public class Iteration extends Controller {
 		iteration.name = params.get("name");
 		iteration.description = params.get("description");
         iteration.stories = new ArrayList<Story>();
-
-        models.Story story = new models.Story();
-        story.name = "US1234";
-        story.description = "Test";
-        story.storyPoints = Fibonacci.EIGHT;
-        story.actualHours = 40;
-
-        iteration.stories.add(story);
 
 		iteration.save();
 

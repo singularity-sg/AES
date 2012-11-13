@@ -14,27 +14,55 @@ import com.orientechnologies.orient.core.id.ORecordId;
  */
 public class Story extends Controller {
 	
-	public static void add() {
+	public static void add(ORecordId id) {
+        models.Iteration iteration = models.Iteration.findById(id);
 		CRUD mode = CRUD.CREATE;
-		renderTemplate("Story/story.html", mode);
+		renderTemplate("Story/story.html", mode, iteration);
 	}
 	
-    public static void create() {
+    public static void create(ORecordId iteration_id) {
     	models.Story story = new models.Story();
 		story.name = params.get("name");
 		story.description = params.get("description");
 		story.storyPoints = Fibonacci.valueOf(Integer.parseInt(params.get("storyPoints")));
 		story.actualHours = Integer.parseInt(params.get("actualHours"));
-		story.save();
+        story.save();
+
+        models.Iteration iteration = models.Iteration.findById(iteration_id);
+        iteration.stories.add(story);
+        iteration.save();
+
+        CRUD mode = CRUD.UPDATE;
+        renderTemplate("Iteration/iteration.html", mode, iteration);
     }
 
-    public static void edit(ORecordId id) {
+    public static void save(ORecordId id, ORecordId iteration_id) {
+        models.Story story = models.Story.findById(id);
+
+        story.name = params.get("name");
+        story.description = params.get("description");
+        story.actualHours = Integer.parseInt(params.get("actualHours"));
+        story.storyPoints = Fibonacci.valueOf(Integer.parseInt(params.get("storyPoints")));
+        story.save();
+
+        CRUD mode = CRUD.UPDATE;
+        models.Iteration iteration = models.Iteration.findById(iteration_id);
+        renderTemplate("Iteration/iteration.html", mode, iteration);
+    }
+
+    public static void edit(ORecordId id, ORecordId iteration_id) {
     	models.Story story = models.Story.findById(id);
     	CRUD mode = CRUD.UPDATE;
+
+        models.Iteration iteration = models.Iteration.findById(iteration_id);
+        renderTemplate("Story/story.html", mode, story, iteration);
     }
 
     public static void delete(ORecordId id) {
+        models.Story story = models.Story.findById(id);
+        story.delete();
 
+        redirect("Application.index");
     }
     
 

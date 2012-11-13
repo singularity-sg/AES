@@ -2,6 +2,7 @@
 	<label for="name" >Name</label>
 	<input type="text" name="name" id="name" value="${_story?.name}" />
     <input type="hidden" name="id" id="id" value="${_story?.getIdentity()}" />
+    <input type="hidden" name="iteration_id" id="iteration_id" value="${_iteration?.getIdentity()}" />
 </p>
 <p>
 	<label for="description" >Description</label>
@@ -17,4 +18,5 @@
 </p>
 <p>
     <input type="submit" value="Save" />
+    <input type="button" value="Back" onclick="javascript:history.back()"/>
 </p>
