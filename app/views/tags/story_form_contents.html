@@ -1,22 +1,27 @@
-<p>
-	<label for="name" >Name</label>
-	<input type="text" name="name" id="name" value="${_story?.name}" />
-    <input type="hidden" name="id" id="id" value="${_story?.getIdentity()}" />
-    <input type="hidden" name="iteration_id" id="iteration_id" value="${_iteration?.getIdentity()}" />
-</p>
-<p>
-	<label for="description" >Description</label>
-	<input type="text" name="description" id="description" value="${_story?.description}" />
-</p>
-<p>
-	<label for="storyPoints" >Story Points</label>
-	<input type="text" name="storyPoints" id="storyPoints" value="${_story?.storyPoints}" />
-</p>
-<p>
-	<label for="actualHours" >Actual Hours</label>
-	<input type="text" name="actualHours" id="actualHours" value="${_story?.actualHours}" />
-</p>
-<p>
-    <input type="submit" value="Save" />
-    <input type="button" value="Back" onclick="javascript:history.back()"/>
-</p>
+<table class="form-table">
+	<tr>
+		<td><label for="name" >Name</label></td>
+		<td><input class="text" type="text" name="name" id="name" value="${_story?.name}" /></td>
+    	<td>
+    		<input type="hidden" name="id" id="id" value="${_story?.getIdentity()}" />
+    		<input type="hidden" name="iteration_id" id="iteration_id" value="${_iteration?.getIdentity()}" />
+    	</td>
+   	</tr>
+	<tr>
+		<td><label for="description" >Description</label></td>
+		<td><input class="text" type="text" name="description" id="description" value="${_story?.description}" /></td>
+	</tr>
+	<tr>
+		<td><label for="storyPoints" >Story Points</label></td>
+		<td><input class="text" type="text" name="storyPoints" id="storyPoints" value="${_story?.storyPoints}" /></td>
+	</tr>
+	<tr>
+		<td><label for="actualHours" >Actual Hours</label></td>
+		<td><input class="text" type="text" name="actualHours" id="actualHours" value="${_story?.actualHours}" /></td>
+	</tr>
+</table>
+
+<div class="form-footer">
+	<input type="submit" class="button" value="Save" />
+	<input type="button" class="button" value="Back" onclick="javascript:history.back()"/>
+</div>

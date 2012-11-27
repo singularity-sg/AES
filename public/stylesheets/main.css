@@ -1,0 +1,104 @@
+body {
+	font-family: Tahoma, Geneva, sans-serif;
+}
+
+table {
+	width: 100%;
+	padding: 5px 5px;
+	margin: 5px 5px;
+	border-collapse: collapse;
+}
+
+th {
+	font-weight: normal;
+	font-size: 1.05em;
+	border-bottom: 2px solid #6678B1;
+	text-align: left;
+	padding: 8px 8px; 
+}
+
+td {
+	border-bottom: 1px solid #6678B1;
+	padding: 10px 8px;
+	
+}
+
+a.button, input.button {
+	font-size: 0.9em;
+	border: 1px solid #6678B1;
+	padding: 4px 20px;	
+	text-decoration: none;
+	margin: 0px 5px;
+	background-color: #FFFFFF;
+}
+
+a.button:hover, input.button:hover {
+	background-color: #CCFFFF;
+}
+
+label {
+	padding: 4px 8px;
+}
+
+h1 {
+	font-style: normal;
+	font-size: 1.1em;
+	font-weight: bold;
+	margin: 10px 0px 50px 0px;
+}
+
+h2 {
+	font-style: normal;
+	font-size: 1.05em;
+	font-weight: bolder;
+	margin: 5px 0px 15px 0px;
+}
+
+input.text {
+	float: right;
+	padding: 2px 2px;
+	width: 200px;
+}
+
+table.form-table {
+	width: 400px;
+}
+
+table.form-table td {
+	border: none;
+	padding: 5px 5px;
+}
+
+div.form-footer {
+	float: right;
+	margin: 30px 10px 0px 10px;
+}
+
+#stories_table_decorator {
+	float: right;	
+	position: relative;
+	margin: 5px 0px;
+}
+
+#stories_container {
+	margin: 50px 5px 50px 5px;
+}
+
+#iterations_table_decorator {
+	float: right;
+	position: relative;
+	margin: 5px 0px;
+}
+
+#story_form_container {
+	width: 50%;
+}
+
+#iteration_container {
+	width: 50%;	
+}
+
+#iteration_form_container {
+	width: 50%;
+}
+

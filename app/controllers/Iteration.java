@@ -13,12 +13,13 @@ public class Iteration extends Controller {
 	public static void add() {
         CRUD mode = CRUD.CREATE;
         models.Iteration iteration = new models.Iteration();
-		renderTemplate("Iteration/iteration.html", mode, iteration);
+
+        renderTemplate("Iteration/iteration.html", mode, iteration);
 	}
 	
 	public static void edit(ORecordId id) {
+		CRUD mode = CRUD.UPDATE;
 		models.Iteration iteration = models.Iteration.findById(id);
-        CRUD mode = CRUD.UPDATE;
 
         renderTemplate("Iteration/iteration.html", mode, iteration);
 	}

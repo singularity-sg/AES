@@ -1,9 +1,12 @@
-#{stories iteration:iteration /}
+#{extends 'main.html' /}
+#{set title:'Iterations' /}
+
+<h2>#{if (controllers.CRUD.CREATE.equals(mode))}New#{/if}#{elseif (controllers.CRUD.UPDATE.equals(mode))}Update#{/elseif} Iteration</h2>
 
 <div id="iteration_form_container">
 	#{if (controllers.CRUD.CREATE.equals(mode))}
 		#{form action: @Iteration.create(), enctype:'multipart/form-data'}
-	    	#{iteration_form_contents /}
+	    	#{iteration_form_contents iteration:iteration /}
 		#{/form}
 	#{/if}
 	#{elseif (controllers.CRUD.UPDATE.equals(mode))}

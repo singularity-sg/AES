@@ -1,5 +1,7 @@
+<h2>Iterations</h2>
+
 <div id="iteration_container">
-	<div id="iterations_table_decorator"><a class="button" id="add_button" href="@{Iteration.add()}">Add</a></div>
+	<div id="iterations_table_decorator"><a class="button" id="add_button" href="@{Iteration.add()}">Add Iteration</a></div>
 	<table id="iteration_table">
 		<thead>
 			<tr>
@@ -10,7 +12,7 @@
 		</thead>
 		<tbody>
 		#{list items: _iterations, as:'iteration'}
-			<tr>
+			<tr class="${iteration_parity}">
 				<td><span>${iteration.name}</span><input type="hidden" name="name" value="${iteration.name}"</td>
                 <td><span>${iteration.description}</span><input type="hidden" name="name" value="${iteration.description}"</td>
 				<td><a id="edit_button" class="button" href="@{Iteration.edit(iteration.getIdentity())}">Edit</a><a class="button" id="delete_button" href="@{Iteration.delete(iteration.getIdentity())}">Delete</a></td>

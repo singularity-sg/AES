@@ -1,3 +1,8 @@
+#{extends 'main.html' /}
+#{set title:'Story' /}
+
+<h2>#{if (controllers.CRUD.CREATE.equals(mode))}New#{/if}#{elseif (controllers.CRUD.UPDATE.equals(mode))}Update#{/elseif} Story</h2>
+
 <div id="story_form_container">
 	#{if (controllers.CRUD.CREATE.equals(mode))}
 		#{form action: @Story.create(iteration.getIdentity()), enctype:'multipart/form-data'}
