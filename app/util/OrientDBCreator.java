@@ -13,7 +13,7 @@ public class OrientDBCreator {
 	private static Logger logger = Logger.getLogger(OrientDBCreator.class);
 	
 	public static void main(String[] args) throws Exception {
-		new OrientDBCreator().createDB("local:/media/sda3//Development/workspace/AES/db", "admin", "admin");
+		new OrientDBCreator().createDB("local:D:/Han/workspace/AES/db", "admin", "admin");
 	}
 	
 	public void createDB(String url, String user, String password) {

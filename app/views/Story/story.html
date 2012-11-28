@@ -3,15 +3,23 @@
 
 <h2>#{if (controllers.CRUD.CREATE.equals(mode))}New#{/if}#{elseif (controllers.CRUD.UPDATE.equals(mode))}Update#{/elseif} Story</h2>
 
+#{ifErrors}
+	<ul>
+	   #{errors}
+	       <li>${error}</li>
+	   #{/errors}
+	</ul>
+#{/ifErrors}
+
 <div id="story_form_container">
 	#{if (controllers.CRUD.CREATE.equals(mode))}
 		#{form action: @Story.create(iteration.getIdentity()), enctype:'multipart/form-data'}
-	    	#{story_form_contents iteration:iteration /}
+	    	#{story_form_contents iteration:iteration, story:story /}
 		#{/form}
 	#{/if}
 	#{elseif (controllers.CRUD.UPDATE.equals(mode))}
 		#{form action: @Story.save(story.getIdentity(), iteration.getIdentity()), enctype:'multipart/form-data'}
-	    	#{story_form_contents story:story /}
+	    	#{story_form_contents iteration:iteration, story:story /}
 		#{/form}	
 	#{/elseif}
 </div>

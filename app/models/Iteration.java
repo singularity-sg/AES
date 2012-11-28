@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Id;
 
+import play.data.validation.Required;
 import play.modules.orientdb.Model;
 
 public class Iteration extends Model {
@@ -13,10 +14,11 @@ public class Iteration extends Model {
 	@Id
 	private String id;
 	
+	@Required
 	public String name;
 	
 	public String description;
-	
+
 	public List<Story> stories;
 
 	public int getTotalStoryPoints() {
@@ -27,6 +29,7 @@ public class Iteration extends Model {
 		
 		return totalStoryPoints;
 	}
+
 	public int getTotalActualHours() {
 		int totalActualHours = 0;
 		for(Story story: stories) {

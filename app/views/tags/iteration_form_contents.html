@@ -1,12 +1,20 @@
+<div class="hidden">
+	<input type="hidden" name="id" id="id" value="${_iteration.getIdentity()}" />
+</div>
 <table class="form-table">
 	<tr>
 		<td><label for="name" >Name</label></td>
-		<td><input class="text" type="text" name="name" id="name" value="${_iteration?.name}" /></td>
-    	<td><input type="hidden" name="id" id="id" value="${_iteration?.getIdentity()}" /></td>
+		<td>
+			<input class="text" type="text" name="name" id="name" value="${flash.name}" />
+			<span>#{error 'name' /}</span>
+		</td>
     </tr>
     <tr>
 		<td><label for="description" >Description</label></td>
-		<td><input class="text" type="text" name="description" id="description" value="${_iteration?.description}" /></td>
+		<td>
+			<input class="text" type="text" name="description" id="description" value="${flash.description}" />
+			<span>#{error 'description' /}</span>
+		</td>
 	</tr>
 </table>
 

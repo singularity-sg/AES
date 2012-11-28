@@ -1,23 +1,36 @@
+<div class="hidden">
+	<input type="hidden" name="id" id="id" value="${_story.getIdentity()}" />
+	<input type="hidden" name="iteration_id" id="iteration_id" value="${_iteration.getIdentity()}" />
+</div>
+
 <table class="form-table">
 	<tr>
 		<td><label for="name" >Name</label></td>
-		<td><input class="text" type="text" name="name" id="name" value="${_story?.name}" /></td>
-    	<td>
-    		<input type="hidden" name="id" id="id" value="${_story?.getIdentity()}" />
-    		<input type="hidden" name="iteration_id" id="iteration_id" value="${_iteration?.getIdentity()}" />
-    	</td>
+		<td>
+			<input class="text" type="text" name="name" id="name" value="${flash.name}" />
+			<span>#{error 'name' /}</span>
+		</td>
    	</tr>
 	<tr>
 		<td><label for="description" >Description</label></td>
-		<td><input class="text" type="text" name="description" id="description" value="${_story?.description}" /></td>
+		<td>
+			<input class="text" type="text" name="description" id="description" value="${flash.description}" />
+			<span>#{error 'description' /}</span>
+		</td>
 	</tr>
 	<tr>
 		<td><label for="storyPoints" >Story Points</label></td>
-		<td><input class="text" type="text" name="storyPoints" id="storyPoints" value="${_story?.storyPoints}" /></td>
+		<td>
+			<input class="text" type="text" name="storyPoints" id="storyPoints" value="${flash.storyPoints}" />
+			<span>#{error 'storyPoints' /}</span>
+		</td>
 	</tr>
 	<tr>
 		<td><label for="actualHours" >Actual Hours</label></td>
-		<td><input class="text" type="text" name="actualHours" id="actualHours" value="${_story?.actualHours}" /></td>
+		<td>
+			<input class="text" type="text" name="actualHours" id="actualHours" value="${flash.actualHours}" />
+			<span>#{error 'actualHours' /}</span>
+		</td>
 	</tr>
 </table>
 

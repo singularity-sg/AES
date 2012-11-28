@@ -3,6 +3,14 @@
 
 <h2>#{if (controllers.CRUD.CREATE.equals(mode))}New#{/if}#{elseif (controllers.CRUD.UPDATE.equals(mode))}Update#{/elseif} Iteration</h2>
 
+#{ifErrors}
+	<ul>
+	   #{errors}
+	       <li>${error}</li>
+	   #{/errors}
+	</ul>
+#{/ifErrors}
+
 <div id="iteration_form_container">
 	#{if (controllers.CRUD.CREATE.equals(mode))}
 		#{form action: @Iteration.create(), enctype:'multipart/form-data'}
