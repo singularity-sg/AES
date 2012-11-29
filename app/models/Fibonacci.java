@@ -21,6 +21,7 @@ public enum Fibonacci {
 			case 2 : return Fibonacci.TWO;
 			case 3 : return Fibonacci.THREE;
 			case 5 : return Fibonacci.FIVE;
+			case 8 : return Fibonacci.EIGHT;
 			case 13 : return Fibonacci.THIRTEEN;
 			case 21 : return Fibonacci.TWENTYONE;
 			case 40 : return Fibonacci.FORTY;

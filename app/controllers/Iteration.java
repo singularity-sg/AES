@@ -12,7 +12,7 @@ public class Iteration extends Controller {
 
 	@Before(only={"save","create"})
 	static void validate(){
-		validation.required("name", params.get("name")).message("Name is required");
+		validation.required("iteration.name", params.get("iteration.name")).message("Name is required");
 		
 		if(validation.hasErrors()) {
 			params.flash();
@@ -30,8 +30,8 @@ public class Iteration extends Controller {
 		CRUD mode = CRUD.UPDATE;
 		models.Iteration iteration = models.Iteration.findById(id);
 
-		flash.put("name", iteration.name);
-		flash.put("description", iteration.description);
+		flash.put("iteration.name", iteration.name);
+		flash.put("iteration.description", iteration.description);
 		
         renderTemplate("Iteration/iteration.html", mode, iteration);
 	}
@@ -47,8 +47,8 @@ public class Iteration extends Controller {
     	CRUD mode = CRUD.UPDATE;
     	
         models.Iteration iteration = models.Iteration.findById(id);
-        iteration.name = params.get("name");
-        iteration.description = params.get("description");
+        iteration.name = params.get("iteration.name");
+        iteration.description = params.get("iteration.description");
         
         if(validation.hasErrors()) {
     		renderTemplate("Iteration/iteration.html", mode, iteration);
@@ -56,16 +56,17 @@ public class Iteration extends Controller {
         }
         
         iteration.save();
-
-        redirect("Application.index");
+        flash.put("iteration.name", iteration.name);
+		flash.put("iteration.description", iteration.description);
+        renderTemplate("Iteration/iteration.html", mode, iteration);
 	}
 	
 	public static void create() {
 		CRUD mode = CRUD.CREATE;
 		
 		models.Iteration iteration = new models.Iteration();
-		iteration.name = params.get("name");
-		iteration.description = params.get("description");
+		iteration.name = params.get("iteration.name");
+		iteration.description = params.get("iteration.description");
         iteration.stories = new ArrayList<Story>();
 
         if(validation.hasErrors()) {
@@ -75,7 +76,10 @@ public class Iteration extends Controller {
         
 		iteration.save();
 
-        redirect("Application.index");
+		mode = CRUD.UPDATE;
+		flash.put("iteration.name", iteration.name);
+		flash.put("iteration.description", iteration.description);
+		renderTemplate("Iteration/iteration.html", mode, iteration);
 
 	}
 

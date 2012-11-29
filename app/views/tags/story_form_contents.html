@@ -7,29 +7,29 @@
 	<tr>
 		<td><label for="name" >Name</label></td>
 		<td>
-			<input class="text" type="text" name="name" id="name" value="${flash.name}" />
-			<span>#{error 'name' /}</span>
+			<input class="text" type="text" name="story.name" id="story.name" value="${flash['story.name']}" />
+			<span>#{error 'story.name' /}</span>
 		</td>
    	</tr>
 	<tr>
 		<td><label for="description" >Description</label></td>
 		<td>
-			<input class="text" type="text" name="description" id="description" value="${flash.description}" />
-			<span>#{error 'description' /}</span>
+			<input class="text" type="text" name="story.description" id="story.description" value="${flash['story.description']}" />
+			<span>#{error 'story.description' /}</span>
 		</td>
 	</tr>
 	<tr>
 		<td><label for="storyPoints" >Story Points</label></td>
 		<td>
-			<input class="text" type="text" name="storyPoints" id="storyPoints" value="${flash.storyPoints}" />
-			<span>#{error 'storyPoints' /}</span>
+			<input class="text" type="text" name="story.storyPoints" id="story.storyPoints" value="${flash['story.storyPoints']}" />
+			<span>#{error 'story.storyPoints' /}</span>
 		</td>
 	</tr>
 	<tr>
 		<td><label for="actualHours" >Actual Hours</label></td>
 		<td>
-			<input class="text" type="text" name="actualHours" id="actualHours" value="${flash.actualHours}" />
-			<span>#{error 'actualHours' /}</span>
+			<input class="text" type="text" name="story.actualHours" id="story.actualHours" value="${flash['story.actualHours']}" />
+			<span>#{error 'story.actualHours' /}</span>
 		</td>
 	</tr>
 </table>

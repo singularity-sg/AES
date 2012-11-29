@@ -1,5 +1,14 @@
+<script type="text/javascript">
+	function checkIterationSaved(iteration_id) {
+		if(iteration_id) {
+			document.location.href="@{Story.add(_iteration.getIdentity())}";
+		} else {
+			alert("Please save the iteration first before adding stories!");
+		}
+	}
+</script>
 <div id="stories_container">
-	<div id="stories_table_decorator"><a class="button" id="add_button" href="@{Story.add(_iteration.getIdentity())}">Add Story</a></div>
+	<div id="stories_table_decorator"><a class="button" id="add_button" href="#" onclick="checkIterationSaved('${_iteration.getIdentity()}')">Add Story</a></div>
 	<table id="stories_table">
 		<thead>
 			<tr>

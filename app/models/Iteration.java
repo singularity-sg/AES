@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Id;
@@ -19,7 +20,7 @@ public class Iteration extends Model {
 	
 	public String description;
 
-	public List<Story> stories;
+	public List<Story> stories = new ArrayList<Story>();
 
 	public int getTotalStoryPoints() {
 		int totalStoryPoints = 0;

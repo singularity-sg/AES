@@ -20,9 +20,9 @@ public class Story extends Controller {
 	
 	@Before(only={"save","create"})
 	static void validate(){
-		validation.required("name", params.get("name"));
-		validation.match("storyPoints", params.get("storyPoints"), "(0|1|2|3|5|8|13|21|40|100)").message("Story points must be a valid Fibonacci number");
-		validation.match("actualHours", params.get("actualHours"), "[\\d]*").message("Actual Hours must be a number");
+		validation.required("story.name", params.get("story.name"));
+		validation.match("story.storyPoints", params.get("story.storyPoints"), "(0|1|2|3|5|8|13|21|40|100)").message("Story points must be a valid Fibonacci number");
+		validation.match("story.actualHours", params.get("story.actualHours"), "[\\d]*").message("Actual Hours must be a number");
 		
 		if(validation.hasErrors()) {
 			params.flash();
@@ -34,6 +34,8 @@ public class Story extends Controller {
         if(iteration == null) {
         	iteration = new models.Iteration();
         }
+        iteration.name = params.get("iteration.name");
+        iteration.description = params.get("iteration.description");
         
         models.Story story = new models.Story();
         
@@ -47,22 +49,26 @@ public class Story extends Controller {
     	models.Iteration iteration = models.Iteration.findById(iteration_id);
     	if(iteration == null) {
         	iteration = new models.Iteration();
-        	iteration.stories = new ArrayList<models.Story>();
         }
+    	flash.put("iteration.description", iteration.description);
+    	flash.put("iteration.name", iteration.name);
+    	
+    	models.Story story = new models.Story();
+    	story.name = params.get("story.name");
+    	story.description = params.get("story.description");
+    	try {
+    		story.storyPoints = Fibonacci.valueOf(Integer.parseInt(params.get("story.storyPoints")));
+    		story.actualHours = Integer.parseInt(params.get("story.actualHours"));
+    	}catch(NumberFormatException nfe) {}
+
+    	iteration.stories.add(story);
     	
     	if(validation.hasErrors()) {
     		mode = CRUD.CREATE;
-    		renderTemplate("Story/story.html", mode, iteration);
+    		renderTemplate("Story/story.html", mode, iteration, story);
     		return;
     	}
     	
-    	models.Story story = new models.Story();
-		story.name = params.get("name");
-		story.description = params.get("description");
-		story.storyPoints = Fibonacci.valueOf(Integer.parseInt(params.get("storyPoints")));
-		story.actualHours = Integer.parseInt(params.get("actualHours"));
-		
-        iteration.stories.add(story);
         iteration.save();
         
         renderTemplate("Iteration/iteration.html", mode, iteration);
@@ -74,11 +80,14 @@ public class Story extends Controller {
     	models.Iteration iteration = models.Iteration.findById(iteration_id);
  
     	models.Story story = models.Story.findById(id);
-    	story.name = params.get("name");
-        story.description = params.get("description");
-        story.actualHours = Integer.parseInt(params.get("actualHours"));
-        story.storyPoints = Fibonacci.valueOf(Integer.parseInt(params.get("storyPoints")));
-    	
+    	story.name = params.get("story.name");
+        story.description = params.get("story.description");
+        
+        try {
+	        story.actualHours = Integer.parseInt(params.get("story.actualHours"));
+	        story.storyPoints = Fibonacci.valueOf(Integer.parseInt(params.get("story.storyPoints")));
+        }catch(NumberFormatException nfe) {}
+        
     	if(validation.hasErrors()) {
     		renderTemplate("Story/story.html", mode, iteration, story);
     		return;
@@ -97,10 +106,10 @@ public class Story extends Controller {
         flash.put("iteration_id", iteration.getIdentity());
         
         models.Story story = models.Story.findById(id);
-        flash.put("name",story.name);
-        flash.put("description",story.description);
-        flash.put("storyPoints", story.storyPoints);
-        flash.put("actualHours", story.actualHours);
+        flash.put("story.name",story.name);
+        flash.put("story.description",story.description);
+        flash.put("story.storyPoints",story.storyPoints);
+        flash.put("story.actualHours",story.actualHours);
         
         renderTemplate("Story/story.html", mode, iteration, story);
     }

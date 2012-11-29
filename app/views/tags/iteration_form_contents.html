@@ -5,15 +5,15 @@
 	<tr>
 		<td><label for="name" >Name</label></td>
 		<td>
-			<input class="text" type="text" name="name" id="name" value="${flash.name}" />
+			<input class="text" type="text" name="iteration.name" id="iteration.name" value="${flash['iteration.name']}" />
 			<span>#{error 'name' /}</span>
 		</td>
     </tr>
     <tr>
 		<td><label for="description" >Description</label></td>
 		<td>
-			<input class="text" type="text" name="description" id="description" value="${flash.description}" />
-			<span>#{error 'description' /}</span>
+			<input class="text" type="text" name="iteration.description" id="iteration.description" value="${flash['iteration.description']}" />
+			<span>#{error 'iteration.description' /}</span>
 		</td>
 	</tr>
 </table>
