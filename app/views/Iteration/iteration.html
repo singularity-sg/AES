@@ -1,12 +1,6 @@
 #{extends 'main.html' /}
 #{set title:'Iterations' /}
 
-<script type="text/javascript">
-	$(document).ready(function(){
-		jwerty.key("ctrl+S",function() {$("form").submit(); return false});
-	});
-</script>
-
 <h2>#{if (controllers.CRUD.CREATE.equals(mode))}New#{/if}#{elseif (controllers.CRUD.UPDATE.equals(mode))}Update#{/elseif} Iteration</h2>
 
 <div id="iteration_form_container">

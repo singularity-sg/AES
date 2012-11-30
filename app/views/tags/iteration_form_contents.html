@@ -1,6 +1,14 @@
+<script type="text/javascript">
+	$(document).ready(function() {
+		jwerty.key("ctrl+S", function() {$("form").submit(); return false});
+		jwerty.key("ctrl+B", function() {window.location = "@{Application.index()}"; return false});
+	});
+</script>
+
 <div class="hidden">
 	<input type="hidden" name="id" id="id" value="${_iteration.getIdentity()}" />
 </div>
+
 <table class="form-table">
 	<tr>
 		<td><label for="name" >Name</label></td>

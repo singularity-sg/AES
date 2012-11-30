@@ -39,8 +39,8 @@ public class Story extends Controller {
         if(iteration == null) {
         	iteration = new models.Iteration();
         }
-        iteration.name = params.get("iteration.name");
-        iteration.description = params.get("iteration.description");
+        iteration.name = params.get("iteration_name");
+        iteration.description = params.get("iteration_description");
         
         models.Story story = new models.Story();
         
@@ -52,8 +52,8 @@ public class Story extends Controller {
     	CRUD mode = CRUD.UPDATE;
     	
     	models.Iteration iteration = models.Iteration.findById(iteration_id);
-    	flash.put("iteration.description", iteration.description);
-    	flash.put("iteration.name", iteration.name);
+    	flash.put("iteration_description", iteration.description);
+    	flash.put("iteration_name", iteration.name);
     	
     	models.Story story = new models.Story();
     	story.name = params.get("story_name");
@@ -81,8 +81,8 @@ public class Story extends Controller {
     	CRUD mode = CRUD.UPDATE;
     	
     	models.Iteration iteration = models.Iteration.findById(iteration_id);
-    	flash.put("iteration.description", iteration.description);
-    	flash.put("iteration.name", iteration.name);
+    	flash.put("iteration_description", iteration.description);
+    	flash.put("iteration_name", iteration.name);
  
     	models.Story story = models.Story.findById(id);
     	story.name = params.get("story_name");
@@ -122,8 +122,8 @@ public class Story extends Controller {
     	CRUD mode = CRUD.UPDATE;
     	
     	models.Iteration iteration = models.Iteration.findById(iteration_id);
-    	flash.put("iteration.description", iteration.description);
-    	flash.put("iteration.name", iteration.name);
+    	flash.put("iteration_description", iteration.description);
+    	flash.put("iteration_name", iteration.name);
     	
     	Iterator<models.Story> it = iteration.stories.iterator();
     	

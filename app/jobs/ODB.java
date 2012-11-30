@@ -19,19 +19,18 @@ public class ODB {
 		this.url = Play.configuration.getProperty("odb.url");
 		this.username = Play.configuration.getProperty("odb.user");
 		this.password = Play.configuration.getProperty("odb.password");
-		
-		db = ODatabaseDocumentPool.global().acquire(url, username, password);
-		db.countClass("Iteration");
-		
-		Logger.info("Initialised Orient DB");
 	}
 	
 	public void startup() {
-		db = ODatabaseDocumentPool.global().acquire(url, username, password);
+		db = ODatabaseDocumentPool.global().acquire(this.url, this.username, this.password);
+		db.countClass("Iteration");
+		Logger.info("Initialised Orient DB");
 	}
 	
 	public void shutdown() {
-		db.close();
+		if(!db.isClosed()) {
+			db.close();
+		}
 	}
 	
 	public static ODB getInstance() {

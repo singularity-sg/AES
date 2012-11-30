@@ -1,12 +1,6 @@
 #{extends 'main.html' /}
 #{set title:'Story' /}
 
-<script type="text/javascript">
-	$(document).ready(function(){
-		jwerty.key("ctrl+S",function() {$("form").submit(); return false});
-	});
-</script>
-
 <h2>#{if (controllers.CRUD.CREATE.equals(mode))}New#{/if}#{elseif (controllers.CRUD.UPDATE.equals(mode))}Update#{/elseif} Story</h2>
 
 <div id="story_form_container">

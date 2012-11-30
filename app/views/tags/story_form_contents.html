@@ -4,6 +4,9 @@
 		$("#story_storyPoints").autocomplete({source: function(request, response) {
 			response(points);
 		}});
+		
+		jwerty.key("ctrl+S", function() {$("form").submit(); return false});
+		jwerty.key("ctrl+B", function() {window.location = "@{Iteration.edit(_iteration.getIdentity())}"; return false});
 	});
 </script>
 

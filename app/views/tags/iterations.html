@@ -1,5 +1,9 @@
 <h2>Iterations</h2>
-
+<script type="text/javascript">
+	$(document).ready(function(){
+		jwerty.key("ctrl+A", function() {window.location = "@{Iteration.add()}"; return false;});
+	});
+</script>
 <div id="iteration_container">
 	<div id="iterations_table_decorator"><a class="button" id="add_button" href="@{Iteration.add()}">Add Iteration</a></div>
 	<table id="iteration_table">
