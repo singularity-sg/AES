@@ -1,15 +1,13 @@
 #{extends 'main.html' /}
 #{set title:'Story' /}
 
-<h2>#{if (controllers.CRUD.CREATE.equals(mode))}New#{/if}#{elseif (controllers.CRUD.UPDATE.equals(mode))}Update#{/elseif} Story</h2>
+<script type="text/javascript">
+	$(document).ready(function(){
+		jwerty.key("ctrl+S",function() {$("form").submit(); return false});
+	});
+</script>
 
-#{ifErrors}
-	<ul>
-	   #{errors}
-	       <li>${error}</li>
-	   #{/errors}
-	</ul>
-#{/ifErrors}
+<h2>#{if (controllers.CRUD.CREATE.equals(mode))}New#{/if}#{elseif (controllers.CRUD.UPDATE.equals(mode))}Update#{/elseif} Story</h2>
 
 <div id="story_form_container">
 	#{if (controllers.CRUD.CREATE.equals(mode))}
@@ -23,3 +21,4 @@
 		#{/form}	
 	#{/elseif}
 </div>
+

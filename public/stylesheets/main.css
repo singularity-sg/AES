@@ -42,13 +42,14 @@ label {
 
 h1 {
 	font-style: normal;
-	font-size: 1.1em;
+	font-size: 1.2em;
 	font-weight: bold;
 	margin: 10px 0px 50px 0px;
 }
 
-h1 a {
+h1 a, h1 a:visited, h1 a:hover, h1 a:active {
 	text-decoration: none;
+	color: blue;
 }
 
 h2 {
@@ -64,8 +65,12 @@ input.text {
 	width: 200px;
 }
 
+input.hasError {
+	border: medium solid red;
+}
+
 table.form-table {
-	width: 400px;
+	width: 600px;
 }
 
 table.form-table td {
@@ -76,6 +81,23 @@ table.form-table td {
 div.form-footer {
 	float: right;
 	margin: 30px 10px 0px 10px;
+}
+
+div#message-dialog {
+	text-align: center;
+}
+
+div.message {
+	font-size: medium;
+	font-weight: bold;
+	color: #45740A;
+	padding: 40px;
+}
+
+span.errorMessage {
+	font-size: small;
+	font-style: italic;
+	color: red;
 }
 
 #stories_table_decorator {
@@ -105,4 +127,5 @@ div.form-footer {
 #iteration_form_container {
 	width: 50%;
 }
+
 

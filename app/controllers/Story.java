@@ -1,6 +1,6 @@
 package controllers;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 
 import models.Fibonacci;
 import play.mvc.Before;
@@ -20,17 +20,22 @@ public class Story extends Controller {
 	
 	@Before(only={"save","create"})
 	static void validate(){
-		validation.required("story.name", params.get("story.name"));
-		validation.match("story.storyPoints", params.get("story.storyPoints"), "(0|1|2|3|5|8|13|21|40|100)").message("Story points must be a valid Fibonacci number");
-		validation.match("story.actualHours", params.get("story.actualHours"), "[\\d]*").message("Actual Hours must be a number");
+		validation.required("story_name", params.get("story_name"));
+		validation.match("story_storyPoints", params.get("story_storyPoints"), "(0|1|2|3|5|8|13|21|40|100)").message("Story points must be a valid Fibonacci number");
+		validation.match("story_actualHours", params.get("story_actualHours"), "[\\d]*").message("Actual Hours must be a number");
 		
 		if(validation.hasErrors()) {
 			params.flash();
 		}
 	}
 	
-	public static void add(ORecordId id) {
-        models.Iteration iteration = models.Iteration.findById(id);
+	@Before
+	static void clearMessage() {
+		flash.clear();
+	}
+	
+	public static void add(ORecordId iteration_id) {
+        models.Iteration iteration = models.Iteration.findById(iteration_id);
         if(iteration == null) {
         	iteration = new models.Iteration();
         }
@@ -47,18 +52,15 @@ public class Story extends Controller {
     	CRUD mode = CRUD.UPDATE;
     	
     	models.Iteration iteration = models.Iteration.findById(iteration_id);
-    	if(iteration == null) {
-        	iteration = new models.Iteration();
-        }
     	flash.put("iteration.description", iteration.description);
     	flash.put("iteration.name", iteration.name);
     	
     	models.Story story = new models.Story();
-    	story.name = params.get("story.name");
-    	story.description = params.get("story.description");
+    	story.name = params.get("story_name");
+    	story.description = params.get("story_description");
     	try {
-    		story.storyPoints = Fibonacci.valueOf(Integer.parseInt(params.get("story.storyPoints")));
-    		story.actualHours = Integer.parseInt(params.get("story.actualHours"));
+    		story.storyPoints = Fibonacci.valueOf(Integer.parseInt(params.get("story_storyPoints")));
+    		story.actualHours = Integer.parseInt(params.get("story_actualHours"));
     	}catch(NumberFormatException nfe) {}
 
     	iteration.stories.add(story);
@@ -71,6 +73,7 @@ public class Story extends Controller {
     	
         iteration.save();
         
+        flash.put("message","Story created");
         renderTemplate("Iteration/iteration.html", mode, iteration);
     }
 
@@ -78,49 +81,69 @@ public class Story extends Controller {
     	CRUD mode = CRUD.UPDATE;
     	
     	models.Iteration iteration = models.Iteration.findById(iteration_id);
+    	flash.put("iteration.description", iteration.description);
+    	flash.put("iteration.name", iteration.name);
  
     	models.Story story = models.Story.findById(id);
-    	story.name = params.get("story.name");
-        story.description = params.get("story.description");
-        
+    	story.name = params.get("story_name");
+        story.description = params.get("story_description");
         try {
-	        story.actualHours = Integer.parseInt(params.get("story.actualHours"));
-	        story.storyPoints = Fibonacci.valueOf(Integer.parseInt(params.get("story.storyPoints")));
+	        story.actualHours = Integer.parseInt(params.get("story_actualHours"));
+	        story.storyPoints = Fibonacci.valueOf(Integer.parseInt(params.get("story_storyPoints")));
         }catch(NumberFormatException nfe) {}
         
-    	if(validation.hasErrors()) {
+        populateFlash(story);
+
+        if(validation.hasErrors()) {
     		renderTemplate("Story/story.html", mode, iteration, story);
     		return;
     	}
         
         story.save();
         
+        flash.put("message","Story saved");
         renderTemplate("Iteration/iteration.html", mode, iteration);
     }
 
     public static void edit(ORecordId id, ORecordId iteration_id) {
-    	
     	CRUD mode = CRUD.UPDATE;
-
+    	 
         models.Iteration iteration = models.Iteration.findById(iteration_id);
         flash.put("iteration_id", iteration.getIdentity());
         
         models.Story story = models.Story.findById(id);
-        flash.put("story.name",story.name);
-        flash.put("story.description",story.description);
-        flash.put("story.storyPoints",story.storyPoints);
-        flash.put("story.actualHours",story.actualHours);
-        
+       
+        populateFlash(story);
+         
         renderTemplate("Story/story.html", mode, iteration, story);
     }
 
-    public static void delete(ORecordId id) {
-        models.Story story = models.Story.findById(id);
-        story.delete();
+    public static void delete(ORecordId id, ORecordId iteration_id) {
+    	CRUD mode = CRUD.UPDATE;
+    	
+    	models.Iteration iteration = models.Iteration.findById(iteration_id);
+    	flash.put("iteration.description", iteration.description);
+    	flash.put("iteration.name", iteration.name);
+    	
+    	Iterator<models.Story> it = iteration.stories.iterator();
+    	
+    	while(it.hasNext()) {
+    		models.Story story = it.next();
+    		if(id.equals(story.getIdentity())) {
+    			it.remove();
+    			story.delete();
+    		}
+    	}
 
-        redirect("Application.index");
+        flash.put("message","Story deleted");
+        
+        renderTemplate("Iteration/iteration.html", mode, iteration);
     }
     
-
-
+    private static void populateFlash(models.Story story) {
+    	flash.put("story_name", story.name);
+    	flash.put("story_description", story.description);
+    	flash.put("story_storyPoints", story.storyPoints);
+    	flash.put("story_actualHours", story.actualHours);
+    }
 }

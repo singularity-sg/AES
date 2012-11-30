@@ -12,11 +12,16 @@ public class Iteration extends Controller {
 
 	@Before(only={"save","create"})
 	static void validate(){
-		validation.required("iteration.name", params.get("iteration.name")).message("Name is required");
+		validation.required("iteration_name", params.get("iteration_name")).message("Name is required");
 		
 		if(validation.hasErrors()) {
 			params.flash();
 		}
+	}
+	
+	@Before
+	static void clearMessage() {
+		flash.clear();
 	}
 	
 	public static void add() {
@@ -29,9 +34,8 @@ public class Iteration extends Controller {
 	public static void edit(ORecordId id) {
 		CRUD mode = CRUD.UPDATE;
 		models.Iteration iteration = models.Iteration.findById(id);
-
-		flash.put("iteration.name", iteration.name);
-		flash.put("iteration.description", iteration.description);
+		
+		populateFlash(iteration);
 		
         renderTemplate("Iteration/iteration.html", mode, iteration);
 	}
@@ -47,8 +51,9 @@ public class Iteration extends Controller {
     	CRUD mode = CRUD.UPDATE;
     	
         models.Iteration iteration = models.Iteration.findById(id);
-        iteration.name = params.get("iteration.name");
-        iteration.description = params.get("iteration.description");
+        iteration.name = params.get("iteration_name");
+        iteration.description = params.get("iteration_description");
+        populateFlash(iteration);
         
         if(validation.hasErrors()) {
     		renderTemplate("Iteration/iteration.html", mode, iteration);
@@ -56,8 +61,7 @@ public class Iteration extends Controller {
         }
         
         iteration.save();
-        flash.put("iteration.name", iteration.name);
-		flash.put("iteration.description", iteration.description);
+		flash.put("message","Iteration saved");
         renderTemplate("Iteration/iteration.html", mode, iteration);
 	}
 	
@@ -65,11 +69,12 @@ public class Iteration extends Controller {
 		CRUD mode = CRUD.CREATE;
 		
 		models.Iteration iteration = new models.Iteration();
-		iteration.name = params.get("iteration.name");
-		iteration.description = params.get("iteration.description");
+		iteration.name = params.get("iteration_name");
+		iteration.description = params.get("iteration_description");
         iteration.stories = new ArrayList<Story>();
 
         if(validation.hasErrors()) {
+        	populateFlash(iteration);
     		renderTemplate("Iteration/iteration.html", mode, iteration);
     		return;
         }
@@ -77,10 +82,15 @@ public class Iteration extends Controller {
 		iteration.save();
 
 		mode = CRUD.UPDATE;
-		flash.put("iteration.name", iteration.name);
-		flash.put("iteration.description", iteration.description);
+		populateFlash(iteration);
+		flash.put("message","Iteration created");
 		renderTemplate("Iteration/iteration.html", mode, iteration);
 
 	}
+	
+    private static void populateFlash(models.Iteration iteration) {
+    	flash.put("iteration_name", iteration.name);
+		flash.put("iteration_description", iteration.description);
+    }
 
 }

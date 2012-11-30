@@ -4,17 +4,13 @@
 <table class="form-table">
 	<tr>
 		<td><label for="name" >Name</label></td>
-		<td>
-			<input class="text" type="text" name="iteration.name" id="iteration.name" value="${flash['iteration.name']}" />
-			<span>#{error 'name' /}</span>
-		</td>
+		<td><input class="text #{errorClass 'iteration_name'/}" type="text" name="iteration_name" id="iteration_name" value="${flash['iteration_name']}" /></td>
+		<td><span class="errorMessage">#{error 'iteration_name' /}</span></td>
     </tr>
     <tr>
 		<td><label for="description" >Description</label></td>
-		<td>
-			<input class="text" type="text" name="iteration.description" id="iteration.description" value="${flash['iteration.description']}" />
-			<span>#{error 'iteration.description' /}</span>
-		</td>
+		<td><input class="text #{errorClass 'iteration_description'/}" type="text" name="iteration_description" id="iteration_description" value="${flash['iteration_description']}" /></td>
+		<td><span class="errorMessage">#{error 'iteration_description' /}</span></td>
 	</tr>
 </table>
 
@@ -22,5 +18,5 @@
 
 <div class="form-footer">
     <input type="submit" class="button" value="Save" />
-	<input type="button" class="button" value="Back" onclick="javascript:history.back()"/>
+	<a class="button" href="@{Application.index()}" >Back</a>
 </div>

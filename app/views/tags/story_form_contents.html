@@ -1,3 +1,12 @@
+<script type="text/javascript">
+	var points = [ "0", "1", "2", "3", "5", "8", "13", "21", "40", "100" ];
+	$(document).ready(function() {
+		$("#story_storyPoints").autocomplete({source: function(request, response) {
+			response(points);
+		}});
+	});
+</script>
+
 <div class="hidden">
 	<input type="hidden" name="id" id="id" value="${_story.getIdentity()}" />
 	<input type="hidden" name="iteration_id" id="iteration_id" value="${_iteration.getIdentity()}" />
@@ -6,35 +15,27 @@
 <table class="form-table">
 	<tr>
 		<td><label for="name" >Name</label></td>
-		<td>
-			<input class="text" type="text" name="story.name" id="story.name" value="${flash['story.name']}" />
-			<span>#{error 'story.name' /}</span>
-		</td>
+		<td><input class="text #{errorClass 'story_name'/}" type="text" name="story_name" id="story_name" value="${flash['story_name']}" /></td>
+		<td><span class="errorMessage">#{error 'story_name' /}</span></td>
    	</tr>
 	<tr>
 		<td><label for="description" >Description</label></td>
-		<td>
-			<input class="text" type="text" name="story.description" id="story.description" value="${flash['story.description']}" />
-			<span>#{error 'story.description' /}</span>
-		</td>
+		<td><input class="text #{errorClass 'story_description'/}" type="text" name="story_description" id="story_description" value="${flash['story_description']}" /></td>
+		<td><span class="errorMessage">#{error 'story_description' /}</span></td>
 	</tr>
 	<tr>
 		<td><label for="storyPoints" >Story Points</label></td>
-		<td>
-			<input class="text" type="text" name="story.storyPoints" id="story.storyPoints" value="${flash['story.storyPoints']}" />
-			<span>#{error 'story.storyPoints' /}</span>
-		</td>
+		<td><input class="text #{errorClass 'story_storyPoints'/}" type="text" name="story_storyPoints" id="story_storyPoints" value="${flash['story_storyPoints']}" /></td>
+		<td><span class="errorMessage">#{error 'story_storyPoints' /}</span></td>
 	</tr>
 	<tr>
 		<td><label for="actualHours" >Actual Hours</label></td>
-		<td>
-			<input class="text" type="text" name="story.actualHours" id="story.actualHours" value="${flash['story.actualHours']}" />
-			<span>#{error 'story.actualHours' /}</span>
-		</td>
+		<td><input class="text #{errorClass 'story_actualHours'/}" type="text" name="story_actualHours" id="story_actualHours" value="${flash['story_actualHours']}" /></td>
+		<td><span class="errorMessage">#{error 'story_actualHours' /}</span></td>
 	</tr>
 </table>
 
 <div class="form-footer">
 	<input type="submit" class="button" value="Save" />
-	<input type="button" class="button" value="Back" onclick="javascript:history.back()"/>
+	<a class="button" href="@{Iteration.edit(_iteration.getIdentity())}" >Back</a>
 </div>

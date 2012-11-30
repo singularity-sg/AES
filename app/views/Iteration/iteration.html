@@ -1,15 +1,13 @@
 #{extends 'main.html' /}
 #{set title:'Iterations' /}
 
-<h2>#{if (controllers.CRUD.CREATE.equals(mode))}New#{/if}#{elseif (controllers.CRUD.UPDATE.equals(mode))}Update#{/elseif} Iteration</h2>
+<script type="text/javascript">
+	$(document).ready(function(){
+		jwerty.key("ctrl+S",function() {$("form").submit(); return false});
+	});
+</script>
 
-#{ifErrors}
-	<ul>
-	   #{errors}
-	       <li>${error}</li>
-	   #{/errors}
-	</ul>
-#{/ifErrors}
+<h2>#{if (controllers.CRUD.CREATE.equals(mode))}New#{/if}#{elseif (controllers.CRUD.UPDATE.equals(mode))}Update#{/elseif} Iteration</h2>
 
 <div id="iteration_form_container">
 	#{if (controllers.CRUD.CREATE.equals(mode))}

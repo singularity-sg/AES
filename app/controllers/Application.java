@@ -9,6 +9,7 @@ public class Application extends Controller {
 
     public static void index() {
     	List<Iteration> iterations = Iteration.find("select * from Iteration");
+    	flash.clear();
         render(iterations);
     }
 
