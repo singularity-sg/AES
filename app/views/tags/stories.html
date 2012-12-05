@@ -7,33 +7,58 @@
 		}
 	}
 	
+	function deleteSelectedConfirm() {
+		openConfirmation("Confirm?", "Do you really want to delete the selected records? There is no turning back...", function(){ $("form").attr("action","@{Story.deleteSelected(_iteration.getIdentity())}").submit();$(this).dialog("close");} );
+	}
+	
+	function selectStories(obj) {
+		if($(obj).attr("checked")) {
+			$("input[type='checkbox'][name='selected']").attr("checked", true);
+		} else {
+			$("input[type='checkbox'][name='selected']").attr("checked", false);
+		}
+	}
+	
 	$(document).ready(function() {
 		jwerty.key("ctrl+A", function() {checkIterationSaved('${_iteration.getIdentity()}'); return false;});
+		
+		$("#stories_table").dataTable({
+			"aoColumnDefs": [
+				{ "bSortable": false, "aTargets": [ 0 ] },
+				{ "bSortable": false, "aTargets": [ 5 ] }
+    		]});
 	});
 </script>
 <div id="stories_container">
-	<div id="stories_table_decorator"><a class="button" id="add_button" href="#" onclick="checkIterationSaved('${_iteration.getIdentity()}')">Add Story</a></div>
+	<div id="stories_table_decorator">
+		<a class="button" id="add_button" href="#" onclick="checkIterationSaved('${_iteration.getIdentity()}')">Add Story</a>
+		<a class="button" id="delete_button" href="#" onclick="deleteSelectedConfirm()">Delete Selected</a>
+	</div>
 	<table id="stories_table">
 		<thead>
 			<tr>
-    			<th>Name</th>
-    			<th>Description</th>
-    			<th>Story Points</th>
-    			<th>Actual Hours</th>
-                <th>Actions</th>
+				<th width="5%"><input type="checkbox" name="selectAll" title="Select all" onclick="selectStories(this)" /></th>
+    			<th width="15%">Name</th>
+    			<th width="40%">Description</th>
+    			<th width="10%">Story Points</th>
+    			<th width="10%">Actual Hours</th>
+                <th width="20%">Actions</th>
 			</tr>
 		</thead>
         <tbody>
         #{if _iteration != null}
             #{list items: _iteration?.stories, as:'story'}
 	    	<tr>
+	    		<td><input type="checkbox" name="selected" value="${story.getIdentity()}" /></td> 
 	    		<td><span>${story.name}</span><input name="story.name[]" type="hidden" value="${story.name}" /></td>
 	    		<td><span>${story.description}</span><input name="story.description[]" type="hidden" value="${story.description}" /></td>
 	    		<td><span>${story.storyPoints}</span><input name="story.storyPoints[]" type="hidden" value="${story.storyPoints}" /></td>
 	    		<td><span>${story.actualHours}</span><input name="story.actualHours[]" type="hidden" value="${story.actualHours}" /></td>
                 <td>
-                	<a id="edit_button" class="button" href="@{Story.edit(story.getIdentity(), _iteration.getIdentity())}">Edit</a>
-                	<a class="button" id="delete_button" href="#" onclick="javascript: openConfirmation('Delete ${story.name}', 'Do you really want to delete this record?', '@{Story.delete(story.getIdentity(), _iteration.getIdentity())}');">Delete</a>
+                	<div class="button_group">
+                		<a id="edit_button" class="button" href="@{Story.edit(story.getIdentity(), _iteration.getIdentity())}">Edit</a>
+                		<a class="button" id="delete_button" href="#" onclick="javascript: openConfirmation('Delete ${story.name}', 'Do you really want to delete this record?', function() { document.location.href='@{Iteration.delete(_iteration.getIdentity())}';$(this).dialog('close');})">Delete</a>
+                	</div>
                 </td>
 	    	</tr>
             #{/list}

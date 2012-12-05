@@ -88,6 +88,17 @@ public class Iteration extends Controller {
 
 	}
 	
+	public static void deleteSelected(String[] selected) {
+		for(int i=0;i<selected.length;i++) {
+			models.Iteration iteration = models.Iteration.findById(new ORecordId(selected[i]));
+			iteration.delete();
+		}
+		
+		flash.clear();
+		
+		redirect("Application.index");
+	}
+	
     private static void populateFlash(models.Iteration iteration) {
     	flash.put("iteration_name", iteration.name);
 		flash.put("iteration_description", iteration.description);

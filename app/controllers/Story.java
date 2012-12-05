@@ -140,6 +140,30 @@ public class Story extends Controller {
         renderTemplate("Iteration/iteration.html", mode, iteration);
     }
     
+    public static void deleteSelected(ORecordId iteration_id, String[] selected) {
+    	CRUD mode = CRUD.UPDATE;
+    			
+		models.Iteration iteration = models.Iteration.findById(iteration_id);
+    	flash.put("iteration_description", iteration.description);
+    	flash.put("iteration_name", iteration.name);
+
+		for(int i=0;i<selected.length;i++) {
+			Iterator<models.Story> it = iteration.stories.iterator();
+			while(it.hasNext()) {
+				models.Story story = it.next();
+    			if(story.getIdentity().toString().equals(selected[i])) {
+    				it.remove();
+    			}
+			}
+		}		
+		
+		iteration.save();
+		
+    	flash.put("message","Stories deleted");
+    	
+		renderTemplate("Iteration/iteration.html", mode, iteration);
+	}
+    
     private static void populateFlash(models.Story story) {
     	flash.put("story_name", story.name);
     	flash.put("story_description", story.description);

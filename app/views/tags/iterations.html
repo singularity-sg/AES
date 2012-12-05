@@ -2,29 +2,56 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		jwerty.key("ctrl+A", function() {window.location = "@{Iteration.add()}"; return false;});
+		
+		$("#iteration_table").dataTable({
+			"aoColumnDefs": [
+				{ "bSortable": false, "aTargets": [ 0 ] },
+				{ "bSortable": false, "aTargets": [ 3 ] }
+    		]});
 	});
+	
+	function deleteSelectedConfirm() {
+		openConfirmation("Confirm?", "Do you really want to delete the selected records? There is no turning back...", function(){ $("form[id='iterations_form']").submit();$(this).dialog("close");} );
+	}
+	
+	function selectIterations(obj) {
+		if($(obj).attr("checked")) {
+			$("input[type='checkbox'][name='selected']").attr("checked", true);
+		} else {
+			$("input[type='checkbox'][name='selected']").attr("checked", false);
+		}
+	}
 </script>
 <div id="iteration_container">
-	<div id="iterations_table_decorator"><a class="button" id="add_button" href="@{Iteration.add()}">Add Iteration</a></div>
+	<div id="iterations_table_decorator">
+		<a class="button" id="add_button" href="@{Iteration.add()}">Add Iteration</a>
+		<a class="button" id="delete_button" href="#" onclick="deleteSelectedConfirm()">Delete Selected</a>
+	</div>
+	#{form @Iteration.deleteSelected(), id:"iterations_form", method:"POST"}
 	<table id="iteration_table">
 		<thead>
 			<tr>
-				<th>Name</th>
-                <th>Description</th>
-				<th>Action</th>
+				<th width="5%"><input type="checkbox" name="selectAll" title="Select all" onclick="selectIterations(this)" /></th>
+				<th width="35%">Name</th>
+                <th width="40%">Description</th>
+				<th width="20%">Action</th>
 			</tr>
 		</thead>
 		<tbody>
 		#{list items: _iterations, as:'iteration'}
 			<tr class="${iteration_parity}">
+				<td><input type="checkbox" name="selected" value="${iteration.getIdentity()}" /></td> 
 				<td><span>${iteration.name}</span><input type="hidden" name="name" value="${iteration.name}"</td>
                 <td><span>${iteration.description}</span><input type="hidden" name="name" value="${iteration.description}"</td>
 				<td>
-					<a id="edit_button" class="button" href="@{Iteration.edit(iteration.getIdentity())}">Edit</a>
-					<a class="button" id="delete_button" href="#" onclick="openConfirmation('Delete ${iteration.name}','Do you really want to delete this record?', '@{Iteration.delete(iteration.getIdentity())}');">Delete</a>
+					<div class="button_group">
+						<a id="edit_button" class="button" href="@{Iteration.edit(iteration.getIdentity())}">Edit</a>
+						<a class="button" id="delete_button" href="#" onclick="openConfirmation('Delete ${iteration.name}','Do you really want to delete this record?', function() { document.location.href='@{Iteration.delete(iteration.getIdentity())}';$(this).dialog('close');});">Delete</a>
+					</div>
 				</td>
 			</tr>
 		#{/list}
 		</tbody>
 	</table>
+	#{/form}
 </div>
