@@ -31,7 +31,10 @@
 	    		<td><span>${story.description}</span><input name="story.description[]" type="hidden" value="${story.description}" /></td>
 	    		<td><span>${story.storyPoints}</span><input name="story.storyPoints[]" type="hidden" value="${story.storyPoints}" /></td>
 	    		<td><span>${story.actualHours}</span><input name="story.actualHours[]" type="hidden" value="${story.actualHours}" /></td>
-                <td><a id="edit_button" class="button" href="@{Story.edit(story.getIdentity(), _iteration.getIdentity())}">Edit</a><a class="button" id="delete_button" href="@{Story.delete(story.getIdentity(), _iteration.getIdentity())}">Delete</a></td>
+                <td>
+                	<a id="edit_button" class="button" href="@{Story.edit(story.getIdentity(), _iteration.getIdentity())}">Edit</a>
+                	<a class="button" id="delete_button" href="#" onclick="javascript: openConfirmation('Delete ${story.name}', 'Do you really want to delete this record?', '@{Story.delete(story.getIdentity(), _iteration.getIdentity())}');">Delete</a>
+                </td>
 	    	</tr>
             #{/list}
         #{/if}

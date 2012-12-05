@@ -19,7 +19,10 @@
 			<tr class="${iteration_parity}">
 				<td><span>${iteration.name}</span><input type="hidden" name="name" value="${iteration.name}"</td>
                 <td><span>${iteration.description}</span><input type="hidden" name="name" value="${iteration.description}"</td>
-				<td><a id="edit_button" class="button" href="@{Iteration.edit(iteration.getIdentity())}">Edit</a><a class="button" id="delete_button" href="@{Iteration.delete(iteration.getIdentity())}">Delete</a></td>
+				<td>
+					<a id="edit_button" class="button" href="@{Iteration.edit(iteration.getIdentity())}">Edit</a>
+					<a class="button" id="delete_button" href="#" onclick="openConfirmation('Delete ${iteration.name}','Do you really want to delete this record?', '@{Iteration.delete(iteration.getIdentity())}');">Delete</a>
+				</td>
 			</tr>
 		#{/list}
 		</tbody>
