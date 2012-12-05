@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
+import models.Fibonacci;
 import models.Iteration;
 import play.mvc.Controller;
 import au.com.bytecode.opencsv.CSVReader;
@@ -41,7 +42,7 @@ public class Application extends Controller {
 			iteration_name = fields[2];
 		}
 		
-		List<Iteration> iterations = Iteration.find("select * from Iteration where name like ?", iteration_name);
+		List<Iteration> iterations = Iteration.find("select * from Iteration where name = ?", iteration_name);
 		Iteration iteration = null;
 		if(iterations.size() > 0) {
 			iteration = iterations.get(0);
@@ -53,7 +54,8 @@ public class Application extends Controller {
 		models.Story story = new models.Story();
 		story.name = story_name;
 		story.description = story_description;
-		
+		story.actualHours = 0;
+		story.storyPoints = Fibonacci.ZERO;
 		iteration.stories.add(story);
 		
 		return iteration;

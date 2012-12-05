@@ -15,6 +15,8 @@
 	<input type="hidden" name="iteration_id" id="iteration_id" value="${_iteration.getIdentity()}" />
 </div>
 
+<fieldset>
+<legend>Story Fields</legend>
 <table class="form-table">
 	<tr>
 		<td><label for="name" >Name</label></td>
@@ -37,8 +39,9 @@
 		<td><span class="errorMessage">#{error 'story_actualHours' /}</span></td>
 	</tr>
 </table>
+</fieldset>
 
-<div class="form-footer">
+<div id="form-footer">
 	<input type="submit" class="button" value="Save" />
 	<a class="button" href="@{Iteration.edit(_iteration.getIdentity())}" >Back</a>
 </div>

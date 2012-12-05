@@ -9,6 +9,8 @@
 	<input type="hidden" name="id" id="id" value="${_iteration.getIdentity()}" />
 </div>
 
+<fieldset>
+<legend>Iteration Fields</legend>
 <table class="form-table">
 	<tr>
 		<td><label for="name" >Name</label></td>
@@ -21,6 +23,7 @@
 		<td><span class="errorMessage">#{error 'iteration_description' /}</span></td>
 	</tr>
 </table>
+</fieldset>
 
 #{stories iteration:_iteration /}
 

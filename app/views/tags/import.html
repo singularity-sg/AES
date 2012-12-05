@@ -1,0 +1,21 @@
+<script type="text/javascript">
+	function openImportForm() {
+		$("#importDialog").dialog({
+				closeOnEscape: true, 
+				title: 'Import', 
+				modal: true, 
+				buttons: [ { text: "Import", click: function() {$('#importForm').submit(); $(this).dialog("close") }} ,
+				           { text: "Cancel", click: function() {$(this).dialog("close"); }} ]
+		});
+	}
+</script>
+
+<div id="importButton">
+	<a class="button" href="#" onclick="openImportForm()" title="CSV format : (Story Name, Story Description, Iteration Name)">Import csv</a>
+</div>
+
+<div id="importDialog" style="display: none">
+#{form @Application.importCsv(), enctype: 'multipart/form-data', id: 'importForm', method: 'POST', class: 'section'}
+	<input type="file" name="csv_file">
+#{/form}
+</div>
