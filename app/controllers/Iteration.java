@@ -89,12 +89,15 @@ public class Iteration extends Controller {
 	}
 	
 	public static void deleteSelected(String[] selected) {
-		for(int i=0;i<selected.length;i++) {
-			models.Iteration iteration = models.Iteration.findById(new ORecordId(selected[i]));
-			iteration.delete();
+		if(selected != null) {
+			for(int i=0;i<selected.length;i++) {
+				models.Iteration iteration = models.Iteration.findById(new ORecordId(selected[i]));
+				iteration.delete();
+			}
 		}
-		
+			
 		flash.clear();
+		flash.put("message", "No record selected!");
 		
 		redirect("Application.index");
 	}

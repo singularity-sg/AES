@@ -141,25 +141,33 @@ public class Story extends Controller {
     }
     
     public static void deleteSelected(ORecordId iteration_id, String[] selected) {
+    	
     	CRUD mode = CRUD.UPDATE;
-    			
-		models.Iteration iteration = models.Iteration.findById(iteration_id);
-    	flash.put("iteration_description", iteration.description);
-    	flash.put("iteration_name", iteration.name);
+    	flash.clear();
+    	models.Iteration iteration = null;
+    	
+    	if(selected != null && iteration_id != null) {
+    		iteration = models.Iteration.findById(iteration_id);
+        	flash.put("iteration_description", iteration.description);
+        	flash.put("iteration_name", iteration.name);
 
-		for(int i=0;i<selected.length;i++) {
-			Iterator<models.Story> it = iteration.stories.iterator();
-			while(it.hasNext()) {
-				models.Story story = it.next();
-    			if(story.getIdentity().toString().equals(selected[i])) {
-    				it.remove();
+    		for(int i=0;i<selected.length;i++) {
+    			Iterator<models.Story> it = iteration.stories.iterator();
+    			while(it.hasNext()) {
+    				models.Story story = it.next();
+        			if(story.getIdentity().toString().equals(selected[i])) {
+        				it.remove();
+        			}
     			}
-			}
-		}		
-		
-		iteration.save();
-		
-    	flash.put("message","Stories deleted");
+    		}		
+    		
+    		iteration.save();
+    		
+        	flash.put("message","Stories deleted");
+        	
+    	} else {
+    		flash.put("error","No items selected!");
+    	}
     	
 		renderTemplate("Iteration/iteration.html", mode, iteration);
 	}

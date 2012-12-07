@@ -1,12 +1,12 @@
 package util;
 
+import java.io.File;
+
+import org.apache.log4j.Logger;
+
+import com.orientechnologies.orient.core.config.OGlobalConfiguration;
 import com.orientechnologies.orient.core.db.object.ODatabaseObjectPool;
 import com.orientechnologies.orient.core.db.object.ODatabaseObjectTx;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
-import play.Play;
-
-import java.io.File;
 
 public class OrientDBCreator {
 	
@@ -17,6 +17,8 @@ public class OrientDBCreator {
 	}
 	
 	public void createDB(String url, String user, String password) {
+		
+		OGlobalConfiguration.STORAGE_KEEP_OPEN.setValue(false);
 		
 		String path = new StringBuilder(System.getProperty("user.home")).append(File.separator).append(".AES").toString();
 		
