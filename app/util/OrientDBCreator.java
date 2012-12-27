@@ -33,6 +33,7 @@ public class OrientDBCreator {
 			try {
 				db = ODatabaseObjectPool.global().acquire(url, user, password);
 				long cnt = db.countClass("Iteration");
+				logger.debug(cnt);
 				return;
 			} catch (Exception e) {
 				logger.error("Unable to open database...", e);
