@@ -3,13 +3,17 @@
 # ~~~~
 
 # Home page
-GET     /                                       Application.index
+GET     /                                          Application.index
+
+GET     /api/expectedmanhours/{<0|1|2|3|5|8|(13)|(21)|(40)|(100)>storyPoints}    Api.expectedManhours
 
 # Ignore favicon requests
-GET     /favicon.ico                            404
+GET     /favicon.ico                               404
 
 # Map static resources from the /app/public folder to the /public path
-GET     /public/                                staticDir:public
+GET     /public/                                statzicDir:public
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
+
+

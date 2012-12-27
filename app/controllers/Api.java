@@ -10,6 +10,9 @@ import java.util.Set;
 
 import models.Fibonacci;
 import models.Story;
+
+import org.apache.commons.math.stat.regression.SimpleRegression;
+
 import play.mvc.Controller;
 
 public class Api extends Controller {
@@ -86,8 +89,21 @@ public class Api extends Controller {
 		renderJSON(stdDeviationMap);
 	}
 	
-	public static void expectedManhours() {
+	public static void expectedManhours(Integer storyPoints) {
 		
+		List<Story> stories = Story.find("select * from Story order by storyPoints desc");
+		Iterator<Story> it = stories.iterator();
+		SimpleRegression regression = new SimpleRegression();
+		
+		while(it.hasNext()) {
+			Story story = it.next();
+			regression.addData(story.storyPoints.getNumber(), story.actualHours);
+		}
+		
+		Double prediction = regression.predict(storyPoints);
+		Double roundedPrediction = ((double)Math.round(prediction * 2) / 2);
+		
+		renderJSON(roundedPrediction);
 	}
 	
 }
