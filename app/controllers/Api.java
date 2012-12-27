@@ -17,33 +17,39 @@ import play.mvc.Controller;
 
 public class Api extends Controller {
 
-	public static void AverageManhours() {
+	public static void averageManhours() {
 		
 		List<Story> stories = Story.find("select * from Story order by storyPoints desc");
 		
-		Map<Fibonacci, Integer> sumMap = findSumOfActualHoursByStoryPoints(stories);
+		Map<Fibonacci, Double> avgMap = findAvgActualHoursByStoryPoints(stories);
 		
-		renderJSON(sumMap);
+		renderJSON(avgMap);
 	}
 
-	private static Map<Fibonacci, Integer> findSumOfActualHoursByStoryPoints(List<Story> stories) {
+	private static Map<Fibonacci, Double> findAvgActualHoursByStoryPoints(List<Story> stories) {
 		
-		Map<Fibonacci, Integer> sumMap = new HashMap<Fibonacci, Integer>();
+		Map<Fibonacci, Double> avgMap = new HashMap<Fibonacci, Double>();
 		
 		int sumActualHours = 0;
+		int ctr = 0;
 		Story prevStory = null;
 		for (Story story : stories) {
-			if(prevStory == null || prevStory.storyPoints != story.storyPoints) {
-				sumMap.put(story.storyPoints, new Integer(sumActualHours));
+			ctr++;
+			if(prevStory == null) {
+				sumActualHours += story.actualHours;
+			} else if(prevStory.storyPoints != story.storyPoints) {
+				sumActualHours += story.actualHours;
+				avgMap.put(story.storyPoints, ((double)sumActualHours/ctr));
 				sumActualHours = 0;
+				ctr = 0;
 			}
-			sumActualHours += story.actualHours;
+			prevStory = story;
 		}
 		
-		return sumMap;
+		return avgMap;
 	}
 	
-	public static void StandardDeviation() {
+	public static void standardDeviation() {
 		
 		Map<Fibonacci, List<Story>> storyMap = new HashMap<Fibonacci, List<Story>>();
 		List<Story> stories = Story.find("select * from Story order by storyPoints desc");
@@ -55,6 +61,7 @@ public class Api extends Controller {
 				someStories = new ArrayList<Story>();
 				storyMap.put(story.storyPoints, someStories);
 			}
+			prevStory = story;
 			someStories.add(story);
 		}
 		
@@ -83,27 +90,36 @@ public class Api extends Controller {
 				sumSquare += square;
 			}
 			
-			stdDeviationMap.put(entry.getKey(), Math.sqrt(sumSquare / count));
+			
+			double stdDev = Math.sqrt(sumSquare / count);
+			stdDev = Math.round(stdDev * 2) / 2;
+			
+			stdDeviationMap.put(entry.getKey(), stdDev);
 		}
   		
 		renderJSON(stdDeviationMap);
 	}
 	
-	public static void expectedManhours(Integer storyPoints) {
+	public static void expectedManhours() {
 		
-		List<Story> stories = Story.find("select * from Story order by storyPoints desc");
+		List<Story> stories = Story.find("select * from Story");
 		Iterator<Story> it = stories.iterator();
 		SimpleRegression regression = new SimpleRegression();
 		
 		while(it.hasNext()) {
 			Story story = it.next();
-			regression.addData(story.storyPoints.getNumber(), story.actualHours);
+			regression.addData((double) story.storyPoints.getNumber(), story.actualHours);
 		}
 		
-		Double prediction = regression.predict(storyPoints);
-		Double roundedPrediction = ((double)Math.round(prediction * 2) / 2);
+		Map<Fibonacci, Double> predictions = new HashMap<Fibonacci, Double>();
 		
-		renderJSON(roundedPrediction);
+		for (Fibonacci fibonacci : Fibonacci.list()) {
+			Double prediction = regression.predict(fibonacci.getNumber());
+			Double roundedPrediction = ((double)Math.round(prediction * 2) / 2);
+			predictions.put(fibonacci, roundedPrediction);
+		}
+		
+		renderJSON(predictions);
 	}
 	
 }

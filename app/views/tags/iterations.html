@@ -4,6 +4,7 @@
 		jwerty.key("ctrl+A", function() {window.location = "@{Iteration.add()}"; return false;});
 		
 		$("#iteration_table").dataTable({
+			"iDisplayLength": 50,
 			"aoColumnDefs": [
 				{ "bSortable": false, "aTargets": [ 0 ] },
 				{ "bSortable": false, "aTargets": [ 3 ] }

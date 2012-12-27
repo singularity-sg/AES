@@ -41,6 +41,8 @@ public class Application extends Controller {
 		if(fields.length > 2 && !"".equals(fields[2])) {
 			iteration_name = fields[2];
 		}
+		String story_points = fields[3];
+		String story_actual_manhours = fields[4];
 		
 		List<Iteration> iterations = Iteration.find("select * from Iteration where name = ?", iteration_name);
 		Iteration iteration = null;
@@ -54,8 +56,12 @@ public class Application extends Controller {
 		models.Story story = new models.Story();
 		story.name = story_name;
 		story.description = story_description;
-		story.actualHours = 0;
-		story.storyPoints = Fibonacci.ZERO;
+		try {
+			story.actualHours = Double.parseDouble(story_actual_manhours);
+		}catch(NumberFormatException nfe) {}
+		try {
+			story.storyPoints = Fibonacci.valueOf(Integer.parseInt(story_points));
+		}catch(NumberFormatException nfe) {}
 		iteration.stories.add(story);
 		
 		return iteration;

@@ -19,6 +19,6 @@ public class Story extends Model {
 	
 	public String description = "";
 	
-	public int actualHours;
+	public double actualHours;
 		
 }

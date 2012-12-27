@@ -23,6 +23,7 @@
 		jwerty.key("ctrl+A", function() {checkIterationSaved('${_iteration.getIdentity()}'); return false;});
 		
 		$("#stories_table").dataTable({
+			"iDisplayLength": 50,
 			"aoColumnDefs": [
 				{ "bSortable": false, "aTargets": [ 0 ] },
 				{ "bSortable": false, "aTargets": [ 5 ] }
