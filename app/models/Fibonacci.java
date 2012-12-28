@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum Fibonacci {
-	
+
 	ZERO(0), ONE(1), TWO(2), THREE(3), FIVE(5), EIGHT(8), THIRTEEN(13), TWENTYONE(21), FORTY(40), HUNDRED(100);
-	
+
 	private final int number;
-	
+
 	Fibonacci(Integer number) {
 		this.number = number;
 	}
@@ -16,7 +16,7 @@ public enum Fibonacci {
 	public int getNumber() {
 		return number;
 	}
-	
+
 	public static List<Fibonacci> list() {
 		List<Fibonacci> list = new ArrayList<Fibonacci>();
 		list.add(ZERO);
@@ -29,10 +29,10 @@ public enum Fibonacci {
 		list.add(TWENTYONE);
 		list.add(FORTY);
 		list.add(HUNDRED);
-		
+
 		return list;
 	}
-	
+
 	public static Fibonacci valueOf(int number) {
 		switch(number) {
 			case 0 : return Fibonacci.ZERO;

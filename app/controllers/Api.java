@@ -11,115 +11,99 @@ import java.util.Set;
 import models.Fibonacci;
 import models.Story;
 
-import org.apache.commons.math.stat.regression.SimpleRegression;
+import org.apache.commons.math3.stat.Frequency;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import org.apache.commons.math3.stat.regression.SimpleRegression;
 
 import play.mvc.Controller;
 
 public class Api extends Controller {
 
-	public static void averageManhours() {
-		
-		List<Story> stories = Story.find("select * from Story order by storyPoints desc");
-		
-		Map<Fibonacci, Double> avgMap = findAvgActualHoursByStoryPoints(stories);
-		
-		renderJSON(avgMap);
-	}
+	public static void average() {
 
-	private static Map<Fibonacci, Double> findAvgActualHoursByStoryPoints(List<Story> stories) {
-		
-		Map<Fibonacci, Double> avgMap = new HashMap<Fibonacci, Double>();
-		
-		int sumActualHours = 0;
-		int ctr = 0;
-		Story prevStory = null;
-		for (Story story : stories) {
-			ctr++;
-			if(prevStory == null) {
-				sumActualHours += story.actualHours;
-			} else if(prevStory.storyPoints != story.storyPoints) {
-				sumActualHours += story.actualHours;
-				avgMap.put(story.storyPoints, ((double)sumActualHours/ctr));
-				sumActualHours = 0;
-				ctr = 0;
-			}
-			prevStory = story;
-		}
-		
-		return avgMap;
-	}
-	
-	public static void standardDeviation() {
-		
-		Map<Fibonacci, List<Story>> storyMap = new HashMap<Fibonacci, List<Story>>();
-		List<Story> stories = Story.find("select * from Story order by storyPoints desc");
-		
-		Story prevStory = null;
-		List<Story> someStories = null;
-		for (Story story : stories) {
-			if(prevStory == null || prevStory.storyPoints != story.storyPoints) {
-				someStories = new ArrayList<Story>();
-				storyMap.put(story.storyPoints, someStories);
-			}
-			prevStory = story;
-			someStories.add(story);
-		}
-		
-		Set<Entry<Fibonacci, List<Story>>> entries = storyMap.entrySet();
-		Iterator<Entry<Fibonacci,  List<Story>>> it = entries.iterator();
-		
-		Map<Fibonacci, Double> stdDeviationMap = new HashMap<Fibonacci, Double>();
-		
+		Map<Fibonacci, Double> averageMap = new HashMap<Fibonacci, Double>();
+		Map<Fibonacci, List<Story>> map = findStoriesMappedByStoryPoints();
+
+		Set<Entry<Fibonacci, List<Story>>> entries = map.entrySet();
+		Iterator<Entry<Fibonacci, List<Story>>> it = entries.iterator();
+
 		while(it.hasNext()) {
 			Entry<Fibonacci, List<Story>> entry = it.next();
-			
-			List<Story> myStories = entry.getValue();
-			double count = 0;
-			double sum = 0;
-			
-			for (Story story : myStories) {
+			List<Story> stories = entry.getValue();
+
+			int size = stories.size();
+			double sum = 0.0D;
+			for(Story story : stories) {
 				sum += story.actualHours;
-				count++;
 			}
-			
-			double avg = sum / count;
-			double sumSquare = 0;
-			
-			for (Story story : myStories) {
-				double square = Math.pow((story.actualHours - avg), 2);
-				sumSquare += square;
-			}
-			
-			
-			double stdDev = Math.sqrt(sumSquare / count);
-			stdDev = Math.round(stdDev * 2) / 2;
-			
-			stdDeviationMap.put(entry.getKey(), stdDev);
+
+			averageMap.put(entry.getKey(), (sum / size));
 		}
-  		
-		renderJSON(stdDeviationMap);
+
+		renderJSON(averageMap);
 	}
-	
-	public static void expectedManhours() {
-		
+
+	private static Map<Fibonacci, List<Story>> findStoriesMappedByStoryPoints() {
+		List<Story> stories = Story.find("select * from Story order by storyPoints desc");
+
+		Map<Fibonacci, List<Story>> storyMap = new HashMap<Fibonacci, List<Story>>();
+
+		for(Story story : stories) {
+			List<Story> list = storyMap.get(story.storyPoints);
+			if(list == null) {
+				list = new ArrayList<Story>();
+				storyMap.put(story.storyPoints, list);
+			}
+			list.add(story);
+		}
+
+		return storyMap;
+	}
+
+	public static void median() {
+
+		Map<Fibonacci, Double> medianMap = new HashMap<Fibonacci, Double>();
+		Map<Fibonacci, List<Story>> map = findStoriesMappedByStoryPoints();
+
+		Set<Entry<Fibonacci, List<Story>>> entries = map.entrySet();
+		Iterator<Entry<Fibonacci, List<Story>>> it = entries.iterator();
+
+		while(it.hasNext()) {
+			Entry<Fibonacci, List<Story>> entry = it.next();
+			List<Story> stories = entry.getValue();
+
+			DescriptiveStatistics stats = new DescriptiveStatistics();
+
+			for(Story story : stories) {
+				stats.addValue(story.actualHours);
+			}
+
+			medianMap.put(entry.getKey(), stats.getPercentile(50));
+		}
+
+		renderJSON(medianMap);
+	}
+
+	public static void linearRegression() {
+
 		List<Story> stories = Story.find("select * from Story");
 		Iterator<Story> it = stories.iterator();
-		SimpleRegression regression = new SimpleRegression();
-		
+		SimpleRegression regression = new SimpleRegression(false);
+
 		while(it.hasNext()) {
 			Story story = it.next();
 			regression.addData((double) story.storyPoints.getNumber(), story.actualHours);
 		}
-		
+
 		Map<Fibonacci, Double> predictions = new HashMap<Fibonacci, Double>();
-		
+
 		for (Fibonacci fibonacci : Fibonacci.list()) {
 			Double prediction = regression.predict(fibonacci.getNumber());
 			Double roundedPrediction = ((double)Math.round(prediction * 2) / 2);
 			predictions.put(fibonacci, roundedPrediction);
 		}
-		
+
 		renderJSON(predictions);
 	}
-	
+
 }

@@ -3,7 +3,7 @@
 require:
     - play
     - play -> orientdb 0.1.1
-    - org.apache.commons -> commons-math 2.0 
+    - org.apache.commons -> commons-math3 3.1 
     - net.sf.opencsv -> opencsv 2.3
     
 repositories:
