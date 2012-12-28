@@ -1,0 +1,20 @@
+#{extends 'main.html' /}
+#{set title:'Charts' /}
+
+<script>
+	$(document).ready(function() {
+		$.get('/api/median', function(data) {
+			createBarChart(data, "#medianChart");
+		});
+		$.get('/api/average', function(data) {
+			createBarChart(data, "#averageChart");
+		});
+		$.get('/api/linearregression', function(data) {
+			createBarChart(data, "#linearRegressionChart");
+		});
+	});
+</script>
+
+<div id="medianChart"><h2>Median</h2></div>
+<div id="averageChart"><h2>Average</h2></div>
+<div id="linearRegressionChart"><h2>Linear Regression</h2></div>
