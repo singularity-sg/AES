@@ -3,6 +3,9 @@
 
 <script>
 	$(document).ready(function() {
+		$.get('/api/normaldistribution', function(data) {
+			createBarChart(data, "#normalDistributionChart");
+		});
 		$.get('/api/median', function(data) {
 			createBarChart(data, "#medianChart");
 		});
@@ -15,6 +18,7 @@
 	});
 </script>
 
+<div id="normalDistributionChart"><h2>Normal Distribution</h2></div>
 <div id="medianChart"><h2>Median</h2></div>
 <div id="averageChart"><h2>Average</h2></div>
 <div id="linearRegressionChart"><h2>Linear Regression</h2></div>

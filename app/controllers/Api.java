@@ -11,10 +11,12 @@ import java.util.Set;
 import models.Fibonacci;
 import models.Story;
 
-import org.apache.commons.math3.stat.Frequency;
+import org.apache.commons.math3.distribution.NormalDistribution;
+import org.apache.commons.math3.exception.NotStrictlyPositiveException;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 
+import play.Logger;
 import play.mvc.Controller;
 
 public class Api extends Controller {
@@ -84,6 +86,43 @@ public class Api extends Controller {
 		renderJSON(medianMap);
 	}
 
+	public static void normalDistribution() {
+
+		Map<Fibonacci, Double> NDMap = new HashMap<Fibonacci, Double>();
+		Map<Fibonacci, List<Story>> map = findStoriesMappedByStoryPoints();
+
+		Set<Entry<Fibonacci, List<Story>>> entries = map.entrySet();
+		Iterator<Entry<Fibonacci, List<Story>>> it = entries.iterator();
+
+		while(it.hasNext()) {
+			
+			try {
+			
+				Entry<Fibonacci, List<Story>> entry = it.next();
+				List<Story> stories = entry.getValue();	
+				
+				DescriptiveStatistics stats = new DescriptiveStatistics();
+	
+				for(Story story : stories) {
+					stats.addValue(story.actualHours);
+				}
+				
+				Logger.debug("Story Points", entry.getKey());
+				Logger.debug("Mean:", stats.getMean());
+				Logger.debug("Std Deviation:", stats.getStandardDeviation());
+				
+				NormalDistribution distribution = new NormalDistribution(stats.getMean(), stats.getStandardDeviation());
+				NDMap.put(entry.getKey(), distribution.getMean());
+			
+			} catch (NotStrictlyPositiveException nspe) {
+				Logger.error(nspe.getMessage(), nspe);
+			}
+		
+		}
+		
+		renderJSON(NDMap);
+	}
+	
 	public static void linearRegression() {
 
 		List<Story> stories = Story.find("select * from Story");

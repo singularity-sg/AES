@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import models.Story;
 import play.mvc.Before;
@@ -92,6 +93,11 @@ public class Iteration extends Controller {
 		if(selected != null) {
 			for(int i=0;i<selected.length;i++) {
 				models.Iteration iteration = models.Iteration.findById(new ORecordId(selected[i]));
+				List<Story> stories = iteration.stories;
+				for(Story story : stories) {
+					story.delete();
+				}
+				
 				iteration.delete();
 			}
 		}
