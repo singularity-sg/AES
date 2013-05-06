@@ -3,10 +3,12 @@ package controllers;
 import java.util.Iterator;
 
 import models.Fibonacci;
+import play.modules.orientdb.Model;
 import play.mvc.Before;
 import play.mvc.Controller;
 
 import com.orientechnologies.orient.core.id.ORecordId;
+import com.orientechnologies.orient.core.iterator.OObjectIteratorMultiCluster;
 
 /**
  * Created with IntelliJ IDEA.
@@ -175,6 +177,11 @@ public class Story extends Controller {
     	
 		renderTemplate("Iteration/iteration.html", mode, iteration);
 	}
+    
+    public static void listAll() {
+    	OObjectIteratorMultiCluster<Model> stories = models.Story.all();
+    	render(stories);
+    }
     
     private static void populateFlash(models.Story story) {
     	flash.put("story_name", story.name);
