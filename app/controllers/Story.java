@@ -18,20 +18,20 @@ import com.orientechnologies.orient.core.id.ORecordId;
 
 public class Story extends Controller {
 	
+	@Before
+	static void clearMessage() {
+		flash.clear();
+	}
+	
 	@Before(only={"save","create"})
 	static void validate(){
 		validation.required("story_name", params.get("story_name"));
 		validation.match("story_storyPoints", params.get("story_storyPoints"), "(0|1|2|3|5|8|13|21|40|100)").message("Story points must be a valid Fibonacci number");
-		validation.match("story_actualHours", params.get("story_actualHours"), "[\\d]*").message("Actual Hours must be a number");
+		validation.match("story_actualHours", params.get("story_actualHours"), "([0-9]*\\.[0-9]+|[0-9]+)").message("Actual Hours must be a number");
 		
 		if(validation.hasErrors()) {
 			params.flash();
 		}
-	}
-	
-	@Before
-	static void clearMessage() {
-		flash.clear();
 	}
 	
 	public static void add(ORecordId iteration_id) {
@@ -60,8 +60,10 @@ public class Story extends Controller {
     	story.description = params.get("story_description");
     	try {
     		story.storyPoints = Fibonacci.valueOf(Integer.parseInt(params.get("story_storyPoints")));
-    		story.actualHours = Integer.parseInt(params.get("story_actualHours"));
-    	}catch(NumberFormatException nfe) {}
+    		story.actualHours = Double.parseDouble(params.get("story_actualHours"));
+    	}catch(NumberFormatException nfe) {
+    		play.Logger.error(nfe, "Cannot parse the values");
+    	}
 
     	iteration.stories.add(story);
     	
@@ -88,9 +90,11 @@ public class Story extends Controller {
     	story.name = params.get("story_name");
         story.description = params.get("story_description");
         try {
-	        story.actualHours = Integer.parseInt(params.get("story_actualHours"));
+	        story.actualHours = Double.parseDouble(params.get("story_actualHours"));
 	        story.storyPoints = Fibonacci.valueOf(Integer.parseInt(params.get("story_storyPoints")));
-        }catch(NumberFormatException nfe) {}
+        }catch(NumberFormatException nfe) {
+        	play.Logger.error(nfe, "Cannot parse the values");
+        }
         
         populateFlash(story);
 
