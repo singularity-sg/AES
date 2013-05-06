@@ -39,8 +39,13 @@ function createBarChart(data, targetId) {
 	for (var key in data) {
 		if (data.hasOwnProperty(key)) {
 			storyPoints.push(key);
-			actualHours.push(data[key]);
 		}
+	}
+	
+	storyPoints.sort(function(a,b){return a-b});
+	
+	for (i=0;i<storyPoints.length;i++) {
+		actualHours.push(data[storyPoints[i]]);
 	}
 	
 	var w=800,
